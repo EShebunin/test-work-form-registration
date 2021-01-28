@@ -4,7 +4,13 @@
       @click="open" 
       class="ui-select__input"
     >
-      <ui-input icon readonly :value="value" />
+      <ui-input 
+        icon 
+        readonly 
+        :value="value"
+        :label="label"
+        :placeholder="placeholder" 
+      />
     </div>
     <div 
       v-if="openDropdown" 
@@ -33,6 +39,14 @@ export default {
       type: String || Number,
       default: '',
     },
+    placeholder: {
+      type: String || Number,
+      default: 'Placeholder',
+    },
+    label: {
+      type: String || Number,
+      default: 'Label',
+    },
   },
   data() {
     return {
@@ -48,6 +62,7 @@ export default {
     },
     pickItem(item) {
       this.$emit('input', item);
+      this.close();
     },
   },
 };

@@ -1,5 +1,10 @@
 <template>
-  <button :disabled="disabled" class="ui-button">
+  <button 
+    :disabled="disabled" 
+    :type="type"
+    @click="clickHandler"
+    class="ui-button"
+  >
     <slot />
   </button>
 </template>
@@ -10,6 +15,15 @@ export default {
       type: Boolean,
       default: false,
     },
+    type: {
+      type: String,
+      default: 'button',
+    }
   },
+  methods: {
+    clickHandler(e) {
+      this.$emit('click', e)
+    }
+  }
 };
 </script>

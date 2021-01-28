@@ -1,12 +1,13 @@
 <template>
   <label class="ui-input">
-    <span class="ui-input__label"> Label </span>
+    <span class="ui-input__label"> {{ label }} </span>
     <input 
       class="ui-input__input" 
       type="text" 
       :value="value"
       @input="inputHandler"
-      :placeholder="placeholder" 
+      :placeholder="placeholder"
+      :readonly="readonly" 
     />
     <svg
       v-if="icon"
@@ -38,7 +39,7 @@
         <rect width="30" height="30" fill="#0880AE" />
       </g>
     </svg>
-    <span v-if="error" class="ui-input__error">
+    <span v-if="error && value.length" class="ui-input__error">
       {{ errorText }}
     </span>
   </label>
@@ -67,6 +68,10 @@ export default {
       default: 'Validation error message',
     },
     icon: {
+      type: Boolean,
+      default: false,
+    },
+    readonly: {
       type: Boolean,
       default: false,
     },

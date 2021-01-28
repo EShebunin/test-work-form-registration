@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     checkedHandler(e) {
-      this.$emit('change', e.target.checked);
+      this.$emit('input', e.target.checked);
     },
   },
 };

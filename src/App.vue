@@ -19,6 +19,8 @@
         class="main__name"
         label="Имя"
         placeholder="Введите Ваше имя"
+        :error="errorName"
+        errorText="Введено не корректное значение"
         v-model="name"
       />
 
@@ -26,6 +28,8 @@
         class="main__email"
         label="Еmail"
         placeholder="Введите ваш email"
+        :error="errorEmail"
+        errorText="Введено не корректное значение"
         v-model="email"
       />
 
@@ -33,6 +37,8 @@
         class="main__phone"
         label="Номер телефона"
         placeholder="Введите номер телефона"
+        :error="errorPhone"
+        errorText="Введено не корректное значение"
         v-model="phone"
       />
       
@@ -45,7 +51,7 @@
       />
 
       <div class="main__check">
-        <ui-checkbox />
+        <ui-checkbox v-model="checkAccept" />
         <span class="main__text">
           Принимаю 
         <a href="#" class="main__link">
@@ -55,7 +61,10 @@
         </span>
       </div>
 
-      <ui-button class="main__btn">
+      <ui-button 
+        :disabled="disableBtn" 
+        type='submit'
+        class="main__btn">
         Зарегистрироваться
       </ui-button>
 
@@ -63,6 +72,7 @@
   </div>
 </template>
 <script>
+/* eslint-disable no-useless-escape */
 export default {
   data() {
     return {
@@ -76,6 +86,37 @@ export default {
         'Китайский',
         'Испанский',
       ],
+      checkAccept: false,
+    }
+  },
+  computed: {
+    errorName() {
+      const pattern = /^[а-яёa-z]*[-.\s]*[а-яёa-z]*$/iu;
+
+      return !pattern.test(this.name)
+    },
+    errorEmail() {
+      const pattern = /^(?!.*@.*@.*$)(?!.*@.*\-\-.*\..*$)(?!.*@.*\-\..*$)(?!.*@.*\-$)(.*@.+(\..{1,11})?)$/;
+
+      return !pattern.test(this.email);
+    },
+    errorPhone() {
+      const pattern = /^\+?\d*[-.().\s]?\d*[-.().\s]?\d*[-.().\s]?\d*[-.().\s]?\d*$/u;
+      const clearNumber = this.phone.replace(/\D/g, "");
+
+      return (!pattern.test(this.phone) ||  clearNumber.length > 11)
+    },
+    disableBtn() {
+      const isEmptyName = this.name.length === 0;
+      const isEmptyEmail = this.email.length === 0;
+      const isEmptyPhone = this.phone.length === 0;
+      const isEmptyLanguage = this.language.length === 0;
+
+      return (isEmptyName || this.errorName) 
+            || (isEmptyEmail || this.errorEmail) 
+            || (isEmptyPhone || this.errorPhone) 
+            || isEmptyLanguage
+            || !this.checkAccept;
     }
   }
 }
